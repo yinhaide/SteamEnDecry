@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+// 统一
+def info = rootProject.ext.android
+def library = rootProject.ext.dependencies
+
+android {
+    compileSdkVersion info.compileSdkVersion
+    defaultConfig {
+        applicationId "com.wenshanhu.endecry"
+        minSdkVersion info.minSdkVersion
+        targetSdkVersion info.targetSdkVersion
+        versionCode info.versionCode
+        versionName info.versionName
+        multiDexEnabled info.multiDexEnabled
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    /*签名发布*/
+    signingConfigs {
+        release {
+            storeFile file("../steampen.jks")
+            storePassword "steampen"
+            keyAlias "steampen"
+            keyPassword "steampen"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    // 统一支持java1.8
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // 动态修改apk的名字
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def versionName = variant.versionName
+            def versionCode = variant.versionCode
+            def buildType = variant.buildType.name
+            def time = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00"))
+            if (variant.buildType.name == 'debug') {
+                outputFileName = "steampen_v${versionName}_c${versionCode}_${buildType}.apk"
+            } else {
+                outputFileName = "steampen_v${versionName}_${time}_${buildType}.apk"
+            }
+        }
+    }
+}
+
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    // 统一基础包(勿删)
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api library.v4
+    api library.v7
+    api library.multidex
+    api library.recyclerview
+    // 架构包,单Activity多Fragment框架(https://github.com/yinhaide/HDRocket)
+    api 'com.github.yinhaide:HDRocket:0.0.4'
+    // 流媒体支持包(https://github.com/yinhaide/HDMediaPlayer)
+    api 'com.github.yinhaide:HDMediaPlayer:0.1.0'
+    // --------------- 下方添加你的依赖 ---------------
+    //内存泄漏检测工具，只需要依赖即可无需任何代码，只在debug版本生效
+    debugApi 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
+}

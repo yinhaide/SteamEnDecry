@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.wenshanhu.endecry">
+
+    <!-- 读写 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:hardwareAccelerated="true"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:name="com.wenshanhu.endecry.app.SteamTVApp"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:theme="@style/STEAMTV_BG_STYLE"
+            android:screenOrientation="landscape"
+            android:name="com.wenshanhu.endecry.activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver android:name="com.wenshanhu.endecry.receiver.USBReceiver">
+            <intent-filter>
+                <!-- 插入-->
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <!--拔出-->
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
+                <!--完全拔出-->
+                <action android:name="android.intent.action.MEDIA_REMOVED"/>
+                <data android:scheme="file"/>
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

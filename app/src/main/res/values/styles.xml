@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="STEAMTV_BG_STYLE" parent="RocketThemePic">
+        <item name="android:windowBackground">@mipmap/home_bg1</item><!--背景图-->
+    </style>
+</resources>
