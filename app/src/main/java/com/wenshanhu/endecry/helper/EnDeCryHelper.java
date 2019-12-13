@@ -178,7 +178,7 @@ public class EnDeCryHelper {
      */
     private void onFinish(CryCallback cryCallback,String msg){
         if(cryCallback != null){
-            mainHandler.post(() -> cryCallback.onError(msg));
+            mainHandler.post(() -> cryCallback.onFinish(msg));
         }
     }
 
