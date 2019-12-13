@@ -15,7 +15,7 @@ public class EnDeCryBean implements Serializable {
 
     public EnDeCryBean(String parentPath) {
         encryPath = parentPath + File.separator + "encry";
-        encryPath = parentPath + File.separator + "decry";
+        decryPath = parentPath + File.separator + "decry";
         sourcePath = parentPath + File.separator + "source";
     }
 

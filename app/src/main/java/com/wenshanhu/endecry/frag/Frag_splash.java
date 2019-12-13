@@ -49,8 +49,8 @@ public class Frag_splash extends Frag_base {
             }
 
             @Override
-            public void onFinish() {
-                toast("加密完成");
+            public void onFinish(String msg) {
+                toast(msg);
             }
         });
     }
@@ -69,8 +69,8 @@ public class Frag_splash extends Frag_base {
             }
 
             @Override
-            public void onFinish() {
-                toast("解密完成");
+            public void onFinish(String msg) {
+                toast(msg);
             }
         });
     }

@@ -5,7 +5,7 @@ import android.os.Looper;
 
 import com.wenshanhu.endecry.bean.SteamBean;
 import com.wenshanhu.endecry.receiver.USBReceiver;
-import com.wenshanhu.endecry.utils.FileUtil;
+import com.yhd.utils.EnDecryUtil;
 
 import java.io.File;
 
@@ -67,41 +67,41 @@ public class EnDeCryHelper {
             File sourceFileFolder = new File(sourcePath);
             File encryFileFolder = new File(encryPath);
             if(!sourceFileFolder.exists() || !sourceFileFolder.isDirectory()){
-                if(cryCallback != null){
-                    mainHandler.post(() -> cryCallback.onError("source文件夹不存在"));
-                }
+                onError(cryCallback,"endecry/source文件夹不存在");
                 return;
             }
             if(!encryFileFolder.exists() || !encryFileFolder.isDirectory()){
-                if(cryCallback != null){
-                    mainHandler.post(() -> cryCallback.onError("encry文件夹不存在"));
-                }
+                onError(cryCallback,"endecry/encry文件夹不存在");
                 return;
             }
             String[] sourceFiles = sourceFileFolder.list();
             if(sourceFiles == null || sourceFiles.length == 0){
-                if(cryCallback != null){
-                    mainHandler.post(() -> cryCallback.onError("source文件夹没有视频"));
-                }
+                onError(cryCallback,"endecry/source文件夹没有视频");
                 return;
             }
             for(String fileName : sourceFiles){
                 String sourceFilePath = sourcePath + File.separator + fileName;
                 String encryFilePath = encryPath + File.separator + fileName;
-                if(new File(sourceFilePath).exists()){
-                    FileUtil.writeToLocal(FileUtil.deEncrypt(sourceFilePath),encryFilePath);
-                    if(cryCallback != null){
-                        mainHandler.post(() -> cryCallback.onProgress("正在加密:"+encryFilePath));
-                    }
-                }else{
-                    if(cryCallback != null){
-                        mainHandler.post(() -> cryCallback.onError("文件"+sourceFilePath+"不存在"));
+                //处理结尾
+                if(encryFilePath.contains(".")){
+                    String[] nameArray = encryFilePath.split("\\.");
+                    if(nameArray.length > 0){
+                        //统一更换加密后的后缀
+                        encryFilePath = encryFilePath.replace(nameArray[nameArray.length - 1],EnDecryUtil.SUFFIX);
                     }
                 }
+                if(!fileName.endsWith(EnDecryUtil.MP4)){
+                    onError(cryCallback,"要加密的视频必须是以."+EnDecryUtil.MP4+"结尾");
+                    return;
+                }
+                if(new File(sourceFilePath).exists()){
+                    EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(sourceFilePath),encryFilePath);
+                    onProgress(cryCallback,"正在加密:"+encryFilePath);
+                }else{
+                    onError(cryCallback,"文件"+sourceFilePath+"不存在");
+                }
             }
-            if(cryCallback != null){
-                mainHandler.post(cryCallback::onFinish);
-            }
+            onFinish(cryCallback,"加密完成");
         }).start();
     }
 
@@ -110,49 +110,77 @@ public class EnDeCryHelper {
      */
     public void beginDecry(CryCallback cryCallback){
         new Thread(() -> {
-            String sourcePath = steamBean.getEnDeCryBean().getSourcePath();
-            String decryPath = steamBean.getEnDeCryBean().getDecryPath();
-            File sourceFileFolder = new File(sourcePath);
-            File decryFileFolder = new File(decryPath);
-            if(!sourceFileFolder.exists() || !sourceFileFolder.isDirectory()){
-                if(cryCallback != null){
-                    mainHandler.post(() -> cryCallback.onError("source文件夹不存在"));
+            new Thread(() -> {
+                String sourcePath = steamBean.getEnDeCryBean().getSourcePath();
+                String decryPath = steamBean.getEnDeCryBean().getDecryPath();
+                File sourceFileFolder = new File(sourcePath);
+                File decryFileFolder = new File(decryPath);
+                if(!sourceFileFolder.exists() || !sourceFileFolder.isDirectory()){
+                    onError(cryCallback,"endecry/source文件夹不存在");
+                    return;
                 }
-                return;
-            }
-            if(!decryFileFolder.exists() || !decryFileFolder.isDirectory()){
-                if(cryCallback != null){
-                    mainHandler.post(() -> cryCallback.onError("decry文件夹不存在"));
+                if(!decryFileFolder.exists() || !decryFileFolder.isDirectory()){
+                    onError(cryCallback,"endecry/decry文件夹不存在");
+                    return;
                 }
-                return;
-            }
-            String[] sourceFiles = sourceFileFolder.list();
-            if(sourceFiles == null || sourceFiles.length == 0){
-                if(cryCallback != null){
-                    mainHandler.post(() -> cryCallback.onError("source文件夹没有视频"));
+                String[] sourceFiles = sourceFileFolder.list();
+                if(sourceFiles == null || sourceFiles.length == 0){
+                    onError(cryCallback,"endecry/source文件夹没有视频");
+                    return;
                 }
-                return;
-            }
-            for(String fileName : sourceFiles){
-                String sourceFilePath = sourcePath + File.separator + fileName;
-                String decryFilePath = decryPath + File.separator + fileName;
-                if(new File(sourceFilePath).exists()){
-                    FileUtil.writeToLocal(FileUtil.deEncrypt(sourceFilePath),decryFilePath);
-                    if(cryCallback != null){
-                        mainHandler.post(() -> cryCallback.onProgress("正在解密:"+decryFilePath));
+                for(String fileName : sourceFiles){
+                    String sourceFilePath = sourcePath + File.separator + fileName;
+                    String decryFilePath = decryPath + File.separator + fileName;
+                    //处理结尾
+                    if(decryFilePath.contains(".")){
+                        String[] nameArray = decryFilePath.split("\\.");
+                        if(nameArray.length > 0){
+                            //统一更换加密后的后缀
+                            decryFilePath = decryFilePath.replace(nameArray[nameArray.length - 1],EnDecryUtil.MP4);
+                        }
                     }
-                }else{
-                    if(cryCallback != null){
-                        mainHandler.post(() -> cryCallback.onError("文件"+sourceFilePath+"不存在"));
+                    if(!fileName.endsWith(EnDecryUtil.SUFFIX)){
+                        onError(cryCallback,"要解密的视频必须是以."+EnDecryUtil.SUFFIX+"结尾");
+                        return;
+                    }
+                    if(new File(sourceFilePath).exists()){
+                        EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(sourceFilePath),decryFilePath);
+                        onProgress(cryCallback,"正在解密:"+decryFilePath);
+                    }else{
+                        onError(cryCallback,"文件"+sourceFilePath+"不存在");
                     }
                 }
-            }
-            if(cryCallback != null){
-                mainHandler.post(cryCallback::onFinish);
-            }
+                onFinish(cryCallback,"解密完成");
+            }).start();
         }).start();
     }
 
+    /**
+     * 加解密回调统一处理
+     */
+    private void onProgress(CryCallback cryCallback,String msg){
+        if(cryCallback != null){
+            mainHandler.post(() -> cryCallback.onProgress(msg));
+        }
+    }
+
+    /**
+     * 加解密回调统一处理
+     */
+    private void onError(CryCallback cryCallback,String msg){
+        if(cryCallback != null){
+            mainHandler.post(() -> cryCallback.onError(msg));
+        }
+    }
+
+    /**
+     * 加解密回调统一处理
+     */
+    private void onFinish(CryCallback cryCallback,String msg){
+        if(cryCallback != null){
+            mainHandler.post(() -> cryCallback.onError(msg));
+        }
+    }
 
     /**
      * 初始化的回调
@@ -167,6 +195,6 @@ public class EnDeCryHelper {
     public interface CryCallback{
         void onProgress(String msg);
         void onError(String msg);
-        void onFinish();
+        void onFinish(String msg);
     }
 }
