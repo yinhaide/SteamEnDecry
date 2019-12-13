@@ -25,9 +25,9 @@ public class Frag_splash extends Frag_base {
     @Override
     public void initViewFinish(View view) {
         tvTitle.setText("请在U盘根目录存放以下路径\n"
-                +"/endecry/source-要加密还是解密的资源文件\n"
-                +"/endecry/encry-加密之后输出的文件夹\n"
-                +"/endecry/decry-解密之后输出的文件夹\n");
+                +"/endecry/source-要加密还是解密的资源文件，以.mp4结尾或者.hd结尾\n"
+                +"/endecry/encry-加密之后输出的文件夹，以.hd结尾输出，source文件夹放.mp4结尾的视频\n"
+                +"/endecry/decry-解密之后输出的文件夹，以.mp4结尾输出，source文件夹放.hd结尾的视频\n");
     }
 
     @Override
