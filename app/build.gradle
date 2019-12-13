@@ -18,10 +18,10 @@ android {
     /*签名发布*/
     signingConfigs {
         release {
-            storeFile file("../steampen.jks")
-            storePassword "steampen"
-            keyAlias "steampen"
-            keyPassword "steampen"
+            storeFile file("../endecry.jks")
+            storePassword "endecry"
+            keyAlias "endecry"
+            keyPassword "endecry"
         }
     }
 
@@ -47,9 +47,9 @@ android {
             def buildType = variant.buildType.name
             def time = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00"))
             if (variant.buildType.name == 'debug') {
-                outputFileName = "steampen_v${versionName}_c${versionCode}_${buildType}.apk"
+                outputFileName = "endecry_v${versionName}_c${versionCode}_${buildType}.apk"
             } else {
-                outputFileName = "steampen_v${versionName}_${time}_${buildType}.apk"
+                outputFileName = "endecry_v${versionName}_${time}_${buildType}.apk"
             }
         }
     }
