@@ -69,10 +69,9 @@ dependencies {
     api library.v7
     api library.multidex
     api library.recyclerview
+    api project(':endecry')
     // 架构包,单Activity多Fragment框架(https://github.com/yinhaide/HDRocket)
     api 'com.github.yinhaide:HDRocket:0.0.4'
-    // 流媒体支持包(https://github.com/yinhaide/HDMediaPlayer)
-    api 'com.github.yinhaide:HDMediaPlayer:0.1.2'
     // --------------- 下方添加你的依赖 ---------------
     //内存泄漏检测工具，只需要依赖即可无需任何代码，只在debug版本生效
     debugApi 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'

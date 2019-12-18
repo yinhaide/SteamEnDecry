@@ -76,7 +76,7 @@ public class EnDeCryHelper {
             }
             String[] sourceFiles = sourceFileFolder.list();
             if(sourceFiles == null || sourceFiles.length == 0){
-                onError(cryCallback,"endecry/source文件夹没有视频");
+                onError(cryCallback,"endecry/source文件夹没有文件");
                 return;
             }
             for(String fileName : sourceFiles){
@@ -86,13 +86,19 @@ public class EnDeCryHelper {
                 if(encryFilePath.contains(".")){
                     String[] nameArray = encryFilePath.split("\\.");
                     if(nameArray.length > 0){
+                        String suffix = EnDecryUtil.SUFFIX;
+                        if(fileName.endsWith(EnDecryUtil.MP4)){
+                            suffix = EnDecryUtil.SUFFIX;
+                        }else if(fileName.endsWith(EnDecryUtil.PNG)){
+                            suffix = EnDecryUtil.SUFFIX_P;
+                        }else if(fileName.endsWith(EnDecryUtil.JPG)){
+                            suffix = EnDecryUtil.SUFFIX_J;
+                        }else if(fileName.endsWith(EnDecryUtil.TXT)){
+                            suffix = EnDecryUtil.SUFFIX_T;
+                        }
                         //统一更换加密后的后缀
-                        encryFilePath = encryFilePath.replace(nameArray[nameArray.length - 1],EnDecryUtil.SUFFIX);
+                        encryFilePath = encryFilePath.replace(nameArray[nameArray.length - 1],suffix);
                     }
-                }
-                if(!fileName.endsWith(EnDecryUtil.MP4)){
-                    onError(cryCallback,"要加密的视频必须是以."+EnDecryUtil.MP4+"结尾");
-                    return;
                 }
                 if(new File(sourceFilePath).exists()){
                     EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(sourceFilePath),encryFilePath);
@@ -110,48 +116,52 @@ public class EnDeCryHelper {
      */
     public void beginDecry(CryCallback cryCallback){
         new Thread(() -> {
-            new Thread(() -> {
-                String sourcePath = steamBean.getEnDeCryBean().getSourcePath();
-                String decryPath = steamBean.getEnDeCryBean().getDecryPath();
-                File sourceFileFolder = new File(sourcePath);
-                File decryFileFolder = new File(decryPath);
-                if(!sourceFileFolder.exists() || !sourceFileFolder.isDirectory()){
-                    onError(cryCallback,"endecry/source文件夹不存在");
-                    return;
-                }
-                if(!decryFileFolder.exists() || !decryFileFolder.isDirectory()){
-                    onError(cryCallback,"endecry/decry文件夹不存在");
-                    return;
-                }
-                String[] sourceFiles = sourceFileFolder.list();
-                if(sourceFiles == null || sourceFiles.length == 0){
-                    onError(cryCallback,"endecry/source文件夹没有视频");
-                    return;
-                }
-                for(String fileName : sourceFiles){
-                    String sourceFilePath = sourcePath + File.separator + fileName;
-                    String decryFilePath = decryPath + File.separator + fileName;
-                    //处理结尾
-                    if(decryFilePath.contains(".")){
-                        String[] nameArray = decryFilePath.split("\\.");
-                        if(nameArray.length > 0){
-                            //统一更换加密后的后缀
-                            decryFilePath = decryFilePath.replace(nameArray[nameArray.length - 1],EnDecryUtil.MP4);
+            String sourcePath = steamBean.getEnDeCryBean().getSourcePath();
+            String decryPath = steamBean.getEnDeCryBean().getDecryPath();
+            File sourceFileFolder = new File(sourcePath);
+            File decryFileFolder = new File(decryPath);
+            if(!sourceFileFolder.exists() || !sourceFileFolder.isDirectory()){
+                onError(cryCallback,"endecry/source文件夹不存在");
+                return;
+            }
+            if(!decryFileFolder.exists() || !decryFileFolder.isDirectory()){
+                onError(cryCallback,"endecry/decry文件夹不存在");
+                return;
+            }
+            String[] sourceFiles = sourceFileFolder.list();
+            if(sourceFiles == null || sourceFiles.length == 0){
+                onError(cryCallback,"endecry/source文件夹没有文件");
+                return;
+            }
+            for(String fileName : sourceFiles){
+                String sourceFilePath = sourcePath + File.separator + fileName;
+                String decryFilePath = decryPath + File.separator + fileName;
+                //处理结尾
+                if(decryFilePath.contains(".")){
+                    String[] nameArray = decryFilePath.split("\\.");
+                    if(nameArray.length > 0){
+                        String suffix = EnDecryUtil.MP4;
+                        if(fileName.endsWith(EnDecryUtil.SUFFIX)){
+                            suffix = EnDecryUtil.MP4;
+                        }else if(fileName.endsWith(EnDecryUtil.SUFFIX_P)){
+                            suffix = EnDecryUtil.PNG;
+                        }else if(fileName.endsWith(EnDecryUtil.SUFFIX_T)){
+                            suffix = EnDecryUtil.TXT;
+                        }else if(fileName.endsWith(EnDecryUtil.SUFFIX_J)){
+                            suffix = EnDecryUtil.JPG;
                         }
-                    }
-                    if(!fileName.endsWith(EnDecryUtil.SUFFIX)){
-                        onError(cryCallback,"要解密的视频必须是以."+EnDecryUtil.SUFFIX+"结尾");
-                        return;
-                    }
-                    if(new File(sourceFilePath).exists()){
-                        EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(sourceFilePath),decryFilePath);
-                        onProgress(cryCallback,"正在解密:"+decryFilePath);
-                    }else{
-                        onError(cryCallback,"文件"+sourceFilePath+"不存在");
+                        //统一更换加密后的后缀
+                        decryFilePath = decryFilePath.replace(nameArray[nameArray.length - 1],suffix);
                     }
                 }
-                onFinish(cryCallback,"解密完成");
-            }).start();
+                if(new File(sourceFilePath).exists()){
+                    EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(sourceFilePath),decryFilePath);
+                    onProgress(cryCallback,"正在解密:"+decryFilePath);
+                }else{
+                    onError(cryCallback,"文件"+sourceFilePath+"不存在");
+                }
+            }
+            onFinish(cryCallback,"解密完成");
         }).start();
     }
 
