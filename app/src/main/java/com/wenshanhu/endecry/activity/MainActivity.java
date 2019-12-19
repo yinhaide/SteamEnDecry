@@ -1,6 +1,8 @@
 package com.wenshanhu.endecry.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -49,12 +51,12 @@ public class MainActivity extends RoActivity {
         //恢复状态栏,因为启动Activity的Theme里面清楚了状态栏,需要恢复
         //<item name="android:windowFullscreen">true</item>
         Rocket.clearWindowFullscreen(this);
-        //注册U盘
-        /*IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);//插
+        //代码注册U盘广播，在Android8.0以后对静态注册(AndroidManifest.xml)有限制，需要在代码中注册
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);//插
         //intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);//拔
         intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);  //完全拔出
         intentFilter.addDataScheme("file");//没有这行监听不起作用
-        registerReceiver(new USBReceiver(), intentFilter);*/
+        registerReceiver(new USBReceiver(), intentFilter);
         //读取U盘的路径
         USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"");
         //初始化路径结构

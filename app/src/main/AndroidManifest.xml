@@ -27,17 +27,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name="com.wenshanhu.endecry.receiver.USBReceiver">
+        <!--改为代码动态注册，防止系统升级到8.0以上对广播静态注册限制-->
+        <!--<receiver android:name="com.wenshanhu.endecry.receiver.USBReceiver">
             <intent-filter>
-                <!-- 插入-->
+                &lt;!&ndash; 插入&ndash;&gt;
                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
-                <!--拔出-->
+                &lt;!&ndash;拔出&ndash;&gt;
                 <action android:name="android.intent.action.MEDIA_UNMOUNTED"/>
-                <!--完全拔出-->
+                &lt;!&ndash;完全拔出&ndash;&gt;
                 <action android:name="android.intent.action.MEDIA_REMOVED"/>
                 <data android:scheme="file"/>
             </intent-filter>
-        </receiver>
+        </receiver>-->
     </application>
 
 </manifest>
