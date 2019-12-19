@@ -13,7 +13,8 @@ import com.de.rocket.ue.activity.RoActivity;
 import com.de.rocket.utils.SharePreUtil;
 import com.wenshanhu.endecry.R;
 import com.wenshanhu.endecry.frag.Frag_base;
-import com.wenshanhu.endecry.frag.Frag_splash;
+import com.wenshanhu.endecry.frag.Frag_play;
+import com.wenshanhu.endecry.frag.Frag_endecry;
 import com.wenshanhu.endecry.helper.SteamHelper;
 import com.wenshanhu.endecry.receiver.USBReceiver;
 
@@ -23,7 +24,8 @@ public class MainActivity extends RoActivity {
 
     // 全部显示的Frag都需要在这里注册
     private Class[] frags = {
-            Frag_splash.class,//动画页面
+            Frag_endecry.class,//动画页面
+            Frag_play.class,//播放页面
     };
 
     @Override

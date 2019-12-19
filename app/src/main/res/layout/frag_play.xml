@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.de.rocket.ue.layout.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:padding="20dp"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="尝试播放手机SD卡根目录的加密的文件(.mhd、.vhd、.thd、.phd、.jhd)"/>
+
+    <ImageView
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/iv_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:focusable="true"
+        android:background="@drawable/cry_bt_selecter"
+        android:padding="5dp"
+        android:textColor="@color/rocket_cl_white"
+        android:id="@+id/bt_vhd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text=".vhd"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:focusable="true"
+        android:background="@drawable/cry_bt_selecter"
+        android:padding="5dp"
+        android:id="@+id/bt_mhd"
+        android:textColor="@color/rocket_cl_white"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text=".mhd"
+        android:layout_below="@+id/bt_vhd"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:focusable="true"
+        android:background="@drawable/cry_bt_selecter"
+        android:padding="5dp"
+        android:id="@+id/bt_thd"
+        android:textColor="@color/rocket_cl_white"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text=".thd"
+        android:layout_below="@+id/bt_mhd"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:focusable="true"
+        android:background="@drawable/cry_bt_selecter"
+        android:padding="5dp"
+        android:id="@+id/bt_phd"
+        android:textColor="@color/rocket_cl_white"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text=".phd"
+        android:layout_below="@+id/bt_thd"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:focusable="true"
+        android:background="@drawable/cry_bt_selecter"
+        android:padding="5dp"
+        android:id="@+id/bt_jhd"
+        android:textColor="@color/rocket_cl_white"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text=".jhd"
+        android:layout_below="@+id/bt_phd"
+        android:layout_centerHorizontal="true"/>
+
+</com.de.rocket.ue.layout.PercentRelativeLayout>

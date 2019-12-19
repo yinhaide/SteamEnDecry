@@ -1,5 +1,8 @@
 package com.yhd.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 字节流加密解密的方案
@@ -121,5 +125,25 @@ public class EnDecryUtil {
             output.write(buffer, 0, n);
         }
         return output.toByteArray();
+    }
+
+    /**
+     * 从字节流中读出UTF-8编码的的字符串
+     * @param buffer 字节流
+     * @return 转码的字符串
+     */
+    public static String getUTF8String(byte[] buffer){
+        String result = "";
+        result = new String(buffer, StandardCharsets.UTF_8);
+        return result;
+    }
+
+    /**
+     * 从字节流中转为Bitmap
+     * @param buffer 字节流
+     * @return 转码的字符串
+     */
+    public static Bitmap getBitmap(byte[] buffer){
+        return BitmapFactory.decodeByteArray(buffer,0, buffer.length);
     }
 }

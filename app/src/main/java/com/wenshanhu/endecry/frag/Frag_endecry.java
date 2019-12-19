@@ -13,14 +13,14 @@ import com.yhd.endecry.EnDecryHelper;
  * 类作用描述
  * Created by haide.yin(haide.yin@tcl.com) on 2019/10/30 15:42.
  */
-public class Frag_splash extends Frag_base {
+public class Frag_endecry extends Frag_base {
 
     @BindView(R.id.tv_title)
     private TextView tvTitle;
 
     @Override
     public int onInflateLayout() {
-        return R.layout.frag_splash;
+        return R.layout.frag_endecry;
     }
 
     @Override
@@ -74,5 +74,10 @@ public class Frag_splash extends Frag_base {
                 toast(msg);
             }
         });
+    }
+
+    @Event(R.id.bt_play)
+    private void play(View view){
+        toFrag(Frag_play.class);
     }
 }

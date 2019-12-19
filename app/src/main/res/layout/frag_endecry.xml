@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/tv_title"
-        android:padding="20dp"
+        android:padding="10dp"
         android:textSize="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,12 +15,12 @@
     <Button
         android:focusable="true"
         android:background="@drawable/cry_bt_selecter"
-        android:padding="20dp"
+        android:padding="5dp"
         android:textColor="@color/rocket_cl_white"
         android:id="@+id/bt_encry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:text="加密"
         android:layout_below="@+id/tv_title"
         android:layout_centerHorizontal="true"/>
@@ -28,15 +28,29 @@
     <Button
         android:focusable="true"
         android:background="@drawable/cry_bt_selecter"
-        android:padding="20dp"
+        android:padding="5dp"
         android:id="@+id/bt_decry"
         android:textColor="@color/rocket_cl_white"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:text="解密"
         android:layout_below="@+id/bt_encry"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:focusable="true"
+        android:background="@drawable/cry_bt_selecter"
+        android:padding="5dp"
+        android:id="@+id/bt_play"
+        android:textColor="@color/rocket_cl_white"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="播放"
+        android:layout_below="@+id/bt_decry"
         android:layout_centerHorizontal="true"/>
 
 </com.de.rocket.ue.layout.PercentRelativeLayout>

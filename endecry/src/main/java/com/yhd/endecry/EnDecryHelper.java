@@ -113,7 +113,7 @@ public class EnDecryHelper {
                         //如果会Android6.0及以上则解密流进行播放
                         if (version >= Build.VERSION_CODES.M) {
                             // 播放加密的视频流
-                            onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_VIDEO,videoPath,decryBuffer);
+                            onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_VIDEO,null,decryBuffer);
                         }else{
                             //如果是Android6.0以下，则先解密然后存到本地播放
                             //为了不让用户看到，存缓存文件为.mp4，名字唯一
@@ -123,16 +123,16 @@ public class EnDecryHelper {
                             if(tempVideoFile.exists()){
                                 onPlayCallBackListener.onPlayCallBack(PlayType.URL_VIDEO,tempVideoPath,null);
                             }else{
-                                onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                                onPlayCallBackListener.onPlayCallBack(PlayType.NONE,videoPath,null);
                             }
                         }
                     }catch(Exception e){
-                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,videoPath,null);
                     }
                 }else if(videoPath.endsWith(EnDecryUtil.MP4)){//没有加密的MP4格式
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_VIDEO,videoPath,null);
                 }else{//其他格式不支持
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,videoPath,null);
                 }
             }else{
                 //找不到以.vhd结尾的尝试找.mp4结尾的
@@ -159,7 +159,7 @@ public class EnDecryHelper {
     public void getDeMusic(String musicPath,OnPlayCallBackListener onPlayCallBackListener){
         //回调不为空
         if(onPlayCallBackListener == null || TextUtils.isEmpty(musicPath)){
-            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,musicPath,null);
         }else{
             File musicFile = new File(musicPath);
             if(musicFile.exists()){
@@ -181,7 +181,7 @@ public class EnDecryHelper {
                         //如果会Android6.0及以上则解密流进行播放
                         if (version >= Build.VERSION_CODES.M) {
                             // 播放加密的视频流
-                            onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_MUSIC,musicPath,decryBuffer);
+                            onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_MUSIC,null,decryBuffer);
                         }else{
                             //如果是Android6.0以下，则先解密然后存到本地播放
                             //为了不让用户看到，存缓存文件为.mp3，名字唯一
@@ -190,16 +190,16 @@ public class EnDecryHelper {
                             if(new File(tempMusicPath).exists()){
                                 onPlayCallBackListener.onPlayCallBack(PlayType.URL_MUSIC,tempMusicPath,null);
                             }else{
-                                onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                                onPlayCallBackListener.onPlayCallBack(PlayType.NONE,musicPath,null);
                             }
                         }
                     }catch(Exception e){
-                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,musicPath,null);
                     }
                 }else if(musicPath.endsWith(EnDecryUtil.MP3)){//没有加密的MP3格式
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_MUSIC,musicPath,null);
                 }else{//其他格式不支持
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,musicPath,null);
                 }
             }else{
                 //找不到以.mhd结尾的尝试找.mp3结尾的
@@ -208,13 +208,13 @@ public class EnDecryHelper {
                     String[] nameArray = mp3MusicPath.split("\\.");
                     if(nameArray.length > 0){
                         //统一更换加密后的后缀
-                        mp3MusicPath = mp3MusicPath.replace(nameArray[nameArray.length - 1],EnDecryUtil.MP4);
+                        mp3MusicPath = mp3MusicPath.replace(nameArray[nameArray.length - 1],EnDecryUtil.MP3);
                     }
                 }
                 if(new File(mp3MusicPath).exists()){
-                    onPlayCallBackListener.onPlayCallBack(PlayType.URL_VIDEO,mp3MusicPath,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.URL_MUSIC,mp3MusicPath,null);
                 }else{
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,musicPath,null);
                 }
             }
         }
@@ -226,7 +226,7 @@ public class EnDecryHelper {
     public void getDeTxt(String txtPath,OnPlayCallBackListener onPlayCallBackListener){
         //回调不为空
         if(onPlayCallBackListener == null || TextUtils.isEmpty(txtPath)){
-            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,txtPath,null);
         }else{
             File txtFile = new File(txtPath);
             if(txtFile.exists()){
@@ -244,14 +244,14 @@ public class EnDecryHelper {
                         //得到解密的音频流
                         byte[] decryBuffer = EnDecryUtil.deEncrypt(bufferData);
                         //解密回调
-                        onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_TXT,txtPath,decryBuffer);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_TXT,null,decryBuffer);
                     }catch(Exception e){
-                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,txtPath,null);
                     }
                 }else if(txtPath.endsWith(EnDecryUtil.TXT)){//没有加密的txt格式
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_TXT,txtPath,null);
                 }else{//其他格式不支持
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,txtPath,null);
                 }
             }else{
                 //找不到以.thd结尾的尝试找.txt结尾的
@@ -266,7 +266,7 @@ public class EnDecryHelper {
                 if(new File(newTxtPath).exists()){
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_TXT,newTxtPath,null);
                 }else{
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,txtPath,null);
                 }
             }
         }
@@ -278,7 +278,7 @@ public class EnDecryHelper {
     public void getDePng(String pngPath,OnPlayCallBackListener onPlayCallBackListener){
         //回调不为空
         if(onPlayCallBackListener == null || TextUtils.isEmpty(pngPath)){
-            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,pngPath,null);
         }else{
             File pngFile = new File(pngPath);
             if(pngFile.exists()){
@@ -296,14 +296,14 @@ public class EnDecryHelper {
                         //得到解密的流
                         byte[] decryBuffer = EnDecryUtil.deEncrypt(bufferData);
                         //解密回调
-                        onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_PNG,pngPath,decryBuffer);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_PNG,null,decryBuffer);
                     }catch(Exception e){
-                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,pngPath,null);
                     }
                 }else if(pngPath.endsWith(EnDecryUtil.PNG)){//没有加密的png格式
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_PNG,pngPath,null);
                 }else{//其他格式不支持
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,pngPath,null);
                 }
             }else{
                 //找不到以.phd结尾的尝试找.png结尾的
@@ -318,7 +318,7 @@ public class EnDecryHelper {
                 if(new File(newPngPath).exists()){
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_PNG,newPngPath,null);
                 }else{
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,pngPath,null);
                 }
             }
         }
@@ -330,7 +330,7 @@ public class EnDecryHelper {
     public void getDeJpg(String jpgPath,OnPlayCallBackListener onPlayCallBackListener){
         //回调不为空
         if(onPlayCallBackListener == null || TextUtils.isEmpty(jpgPath)){
-            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+            onPlayCallBackListener.onPlayCallBack(PlayType.NONE,jpgPath,null);
         }else{
             File jpgFile = new File(jpgPath);
             if(jpgFile.exists()){
@@ -348,14 +348,14 @@ public class EnDecryHelper {
                         //得到解密的流
                         byte[] decryBuffer = EnDecryUtil.deEncrypt(bufferData);
                         //解密回调
-                        onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_JPG,jpgPath,decryBuffer);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.BUFFER_JPG,null,decryBuffer);
                     }catch(Exception e){
-                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                        onPlayCallBackListener.onPlayCallBack(PlayType.NONE,jpgPath,null);
                     }
                 }else if(jpgPath.endsWith(EnDecryUtil.PNG)){//没有加密的png格式
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_JPG,jpgPath,null);
                 }else{//其他格式不支持
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,jpgPath,null);
                 }
             }else{
                 //找不到以.jhd结尾的尝试找.jpg结尾的
@@ -370,7 +370,7 @@ public class EnDecryHelper {
                 if(new File(newJpgPath).exists()){
                     onPlayCallBackListener.onPlayCallBack(PlayType.URL_JPG,newJpgPath,null);
                 }else{
-                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,null,null);
+                    onPlayCallBackListener.onPlayCallBack(PlayType.NONE,jpgPath,null);
                 }
             }
         }
