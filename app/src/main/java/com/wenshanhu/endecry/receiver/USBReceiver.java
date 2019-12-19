@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.de.rocket.utils.SharePreUtil;
-import com.wenshanhu.endecry.helper.EnDeCryHelper;
+import com.wenshanhu.endecry.helper.SteamHelper;
 
 import java.io.File;
 
@@ -35,7 +35,7 @@ public class USBReceiver extends BroadcastReceiver {
                             //Toast.makeText(context,"正在加载文件资料:"+steamPath,Toast.LENGTH_LONG).show();
                             SharePreUtil.getInstance().putString(context,USB_PATH_KEY,USB_PATH);
                             //初始化路径结构
-                            EnDeCryHelper.get().init((msec) -> {
+                            SteamHelper.get().init((msec) -> {
                                 //Toast.makeText(context,"加载完成,耗时:"+msec+"毫秒",Toast.LENGTH_LONG).show();
                             });
                         }

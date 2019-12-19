@@ -17,13 +17,15 @@ public class EnDecryUtil {
     //需要加密的字节流前多少位，这些字节流将和它对应的顺序下标index异或运算
     public static final int REVERSE_LENGTH = 100;
     //解密文件输出的后缀
-    public static final String SUFFIX = "hd";
+    public static final String SUFFIX_V = "vhd";
     //解密文件输出的后缀
     public static final String SUFFIX_P = "phd";
     //解密文件输出的后缀
     public static final String SUFFIX_T = "thd";
     //解密文件输出的后缀
     public static final String SUFFIX_J = "jhd";
+    //解密文件输出的后缀
+    public static final String SUFFIX_M = "mhd";
     //mp4
     public static final String MP4 = "mp4";
     //png
@@ -32,6 +34,8 @@ public class EnDecryUtil {
     public static final String TXT= "png";
     //jpg
     public static final String JPG= "jpg";
+    //jpg
+    public static final String MP3= "mp3";
 
     /**
      * 加解密

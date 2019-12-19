@@ -37,4 +37,6 @@ dependencies {
     api library.v7
     api library.multidex
     api library.recyclerview
+    // 架构包,单Activity多Fragment框架(https://github.com/yinhaide/HDRocket)
+    api 'com.github.yinhaide:HDRocket:0.0.4'
 }

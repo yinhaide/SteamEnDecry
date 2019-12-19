@@ -12,18 +12,6 @@ public class SteamBean implements Serializable {
 
     public SteamBean(String parentPath) {
         enDeCryBean = new EnDeCryBean(parentPath);
-        //parentPath = "/mnt/sdcard";
-        /*filePaths = new ArrayList<>();
-        File parentFile = new File(parentPath);
-        if(parentFile.exists() && parentFile.isDirectory()){
-            String[] videoNames = parentFile.list();
-            for(String fileName : videoNames){
-                if(fileName.endsWith(".mp4")){
-                    String filePath = parentPath + File.separator + fileName;
-                    filePaths.add(filePath);
-                }
-            }
-        }*/
     }
 
     public EnDeCryBean getEnDeCryBean() {

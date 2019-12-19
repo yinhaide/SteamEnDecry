@@ -14,7 +14,7 @@ import com.de.rocket.utils.SharePreUtil;
 import com.wenshanhu.endecry.R;
 import com.wenshanhu.endecry.frag.Frag_base;
 import com.wenshanhu.endecry.frag.Frag_splash;
-import com.wenshanhu.endecry.helper.EnDeCryHelper;
+import com.wenshanhu.endecry.helper.SteamHelper;
 import com.wenshanhu.endecry.receiver.USBReceiver;
 
 import java.io.File;
@@ -61,7 +61,7 @@ public class MainActivity extends RoActivity {
         //初始化路径结构
         //Toast.makeText(this,"正在加载文件资料:"+steamPath,Toast.LENGTH_LONG).show();
         //初始化路径结构
-        EnDeCryHelper.get().init((msec) -> {
+        SteamHelper.get().init((msec) -> {
             if(new File(steamPath).exists()){
                 //Toast.makeText(this,"文件夹存在,加载完成,耗时:"+msec+"毫秒",Toast.LENGTH_LONG).show();
             }else{

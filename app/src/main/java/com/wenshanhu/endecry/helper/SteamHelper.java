@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import com.wenshanhu.endecry.bean.SteamBean;
 import com.wenshanhu.endecry.receiver.USBReceiver;
+import com.yhd.endecry.EnDecryHelper;
 import com.yhd.utils.EnDecryUtil;
 
 import java.io.File;
@@ -13,23 +14,23 @@ import java.io.File;
  * 类作用描述
  * Created by haide.yin(haide.yin@tcl.com) on 2019/11/12 14:50.
  */
-public class EnDeCryHelper {
+public class SteamHelper {
 
-    private static EnDeCryHelper singleton;
+    private static SteamHelper singleton;
     private SteamBean steamBean;
     private Handler mainHandler;//主线程
 
     /**
      * 单例
      */
-    public static synchronized EnDeCryHelper get(){
+    public static synchronized SteamHelper get(){
         if(singleton == null){
-            singleton = new EnDeCryHelper();
+            singleton = new SteamHelper();
         }
         return singleton;
     }
 
-    private EnDeCryHelper(){
+    private SteamHelper(){
         mainHandler = new Handler(Looper.getMainLooper());
     }
 
@@ -86,9 +87,11 @@ public class EnDeCryHelper {
                 if(encryFilePath.contains(".")){
                     String[] nameArray = encryFilePath.split("\\.");
                     if(nameArray.length > 0){
-                        String suffix = EnDecryUtil.SUFFIX;
+                        String suffix = EnDecryUtil.SUFFIX_V;
                         if(fileName.endsWith(EnDecryUtil.MP4)){
-                            suffix = EnDecryUtil.SUFFIX;
+                            suffix = EnDecryUtil.SUFFIX_V;
+                        }else if(fileName.endsWith(EnDecryUtil.MP3)){
+                            suffix = EnDecryUtil.SUFFIX_M;
                         }else if(fileName.endsWith(EnDecryUtil.PNG)){
                             suffix = EnDecryUtil.SUFFIX_P;
                         }else if(fileName.endsWith(EnDecryUtil.JPG)){
@@ -141,8 +144,10 @@ public class EnDeCryHelper {
                     String[] nameArray = decryFilePath.split("\\.");
                     if(nameArray.length > 0){
                         String suffix = EnDecryUtil.MP4;
-                        if(fileName.endsWith(EnDecryUtil.SUFFIX)){
+                        if(fileName.endsWith(EnDecryUtil.SUFFIX_V)){
                             suffix = EnDecryUtil.MP4;
+                        }else if(fileName.endsWith(EnDecryUtil.SUFFIX_M)){
+                            suffix = EnDecryUtil.MP3;
                         }else if(fileName.endsWith(EnDecryUtil.SUFFIX_P)){
                             suffix = EnDecryUtil.PNG;
                         }else if(fileName.endsWith(EnDecryUtil.SUFFIX_T)){

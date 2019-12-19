@@ -6,7 +6,8 @@ import android.widget.TextView;
 import com.de.rocket.ue.injector.BindView;
 import com.de.rocket.ue.injector.Event;
 import com.wenshanhu.endecry.R;
-import com.wenshanhu.endecry.helper.EnDeCryHelper;
+import com.wenshanhu.endecry.helper.SteamHelper;
+import com.yhd.endecry.EnDecryHelper;
 
 /**
  * 类作用描述
@@ -25,19 +26,19 @@ public class Frag_splash extends Frag_base {
     @Override
     public void initViewFinish(View view) {
         tvTitle.setText("请在U盘根目录存放以下路径\n"
-                +"/endecry/source-要加密还是解密的资源文件，以.mp4结尾或者.hd结尾\n"
-                +"/endecry/encry-加密之后输出的文件夹，以.hd结尾输出，source文件夹放.mp4结尾的视频\n"
-                +"/endecry/decry-解密之后输出的文件夹，以.mp4结尾输出，source文件夹放.hd结尾的视频\n");
+                +"/endecry/source-要加密还是解密的资源文件，以.mp4、.mp3、.png、.jpg、.txt结尾或者.vhd、.mhd、.jhd、.phd、.thd结尾\n"
+                +"/endecry/encry-加密之后输出的文件夹，以.vhd、.mhd、.jhd、.phd、.thd结尾输出，source文件夹放.mp4、.mp3、.png、.jpg、.txt结尾的文件\n"
+                +"/endecry/decry-解密之后输出的文件夹，以.mp4、.mp3、.png、.jpg、.txt结尾输出，source文件夹放.vhd、.mhd、.jhd、.phd、.thd结尾的文件\n");
     }
 
     @Override
     public void onNexts(Object o) {
-
+        EnDecryHelper.get().checkUSBState(activity,"");
     }
 
     @Event(R.id.bt_encry)
     private void encry(View view){
-        EnDeCryHelper.get().beginEncry(new EnDeCryHelper.CryCallback() {
+        SteamHelper.get().beginEncry(new SteamHelper.CryCallback() {
             @Override
             public void onProgress(String msg) {
                 toast(msg);
@@ -57,7 +58,7 @@ public class Frag_splash extends Frag_base {
 
     @Event(R.id.bt_decry)
     private void decry(View view){
-        EnDeCryHelper.get().beginDecry(new EnDeCryHelper.CryCallback() {
+        SteamHelper.get().beginDecry(new SteamHelper.CryCallback() {
             @Override
             public void onProgress(String msg) {
                 toast(msg);
