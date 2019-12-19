@@ -33,7 +33,7 @@ public class Frag_endecry extends Frag_base {
 
     @Override
     public void onNexts(Object o) {
-        EnDecryHelper.get().checkUSBState(activity,"/mnt/sdcard");
+
     }
 
     @Event(R.id.bt_encry)

@@ -14,12 +14,12 @@
 
     <!-- 提示框 -->
     <com.de.rocket.ue.layout.PercentLinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:minWidth="200dp"
         android:orientation="vertical"
-        android:background="@drawable/bg_coner_8_ffffff_fill"
-        app:layout_widthPercent="80%w">
+        android:background="@drawable/bg_coner_8_ffffff_fill">
 
         <TextView
             android:id="@+id/tv_content"
@@ -28,9 +28,8 @@
             android:lineSpacingMultiplier="1.2"
             android:text="@string/app_name"
             android:textColor="#000000"
-            app:layout_marginPercent="3%sw"
+            android:layout_margin="15dp"
             app:layout_textSizePercent="2.5%sh"
-            tools:layout_marginPercent="4%w"
             tools:layout_textSizePercent="3%h" />
 
         <View
@@ -43,6 +42,8 @@
         <com.de.rocket.ue.layout.PercentLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@id/v_split"
             android:orientation="horizontal">
 
@@ -55,7 +56,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
-                android:padding="12dp"
                 android:background="@drawable/widget_bt_selecter"
                 android:text="取消"
                 android:textColor="#398eff"
@@ -78,7 +78,6 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:maxLines="1"
-                android:padding="12dp"
                 android:background="@drawable/widget_bt_selecter"
                 android:text="确定"
                 android:textColor="#398eff"
@@ -87,7 +86,6 @@
                 tools:layout_textSizePercent="2.5%h" />
 
         </com.de.rocket.ue.layout.PercentLinearLayout>
-
 
     </com.de.rocket.ue.layout.PercentLinearLayout>
 

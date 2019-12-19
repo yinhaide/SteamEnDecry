@@ -17,6 +17,7 @@ import com.wenshanhu.endecry.frag.Frag_play;
 import com.wenshanhu.endecry.frag.Frag_endecry;
 import com.wenshanhu.endecry.helper.SteamHelper;
 import com.wenshanhu.endecry.receiver.USBReceiver;
+import com.yhd.endecry.EnDecryHelper;
 
 import java.io.File;
 
@@ -55,20 +56,19 @@ public class MainActivity extends RoActivity {
         intentFilter.addDataScheme("file");//没有这行监听不起作用
         registerReceiver(new USBReceiver(), intentFilter);*/
         //读取U盘的路径
-        USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"/storage/udisk0");
-        if(!new File(USBReceiver.USB_PATH + File.separator + USBReceiver.STEAM_PATH).exists()){
-            USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"/storage/1ACEB773CEB74633");
-        }
-        String steamPath = USBReceiver.USB_PATH + File.separator + USBReceiver.STEAM_PATH;
-        //初始化路径结构
-        //Toast.makeText(this,"正在加载文件资料:"+steamPath,Toast.LENGTH_LONG).show();
+        USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"");
         //初始化路径结构
         SteamHelper.get().init((msec) -> {
+            //工程目录
+            String steamPath = USBReceiver.USB_PATH + File.separator + USBReceiver.STEAM_PATH;
+            //判断工程目录是否存在
             if(new File(steamPath).exists()){
                 //Toast.makeText(this,"文件夹存在,加载完成,耗时:"+msec+"毫秒",Toast.LENGTH_LONG).show();
             }else{
                 //Toast.makeText(this,"文件夹不存在,加载完成,耗时:"+msec+"毫秒",Toast.LENGTH_LONG).show();
             }
+            //校验U盘
+            EnDecryHelper.get().checkUSBState(this,"/mnt/sdcard");
         });
     }
 
