@@ -30,6 +30,7 @@ public class TipsWidget extends RelativeLayout {
         ivBg = inflate.findViewById(R.id.iv_bg);
         ivBg.setOnClickListener(null);
         tvCancel.setOnClickListener( view -> hide());
+        tvOk.setOnClickListener( view -> hide());
     }
 
     /**
