@@ -36,6 +36,7 @@ public class EnDecryHelper {
     /** 状态枚举 */
     public enum CallBackState{
         USB_FIX("U盘符合"),
+        USB_RETRY("点了重试"),
         USB_NOT_EXIST("U盘不存在");
 
         private final String state;
@@ -378,15 +379,15 @@ public class EnDecryHelper {
     /**
      * 校验U盘
      */
-    public void checkUSBState(Activity activity,String USBPath){
+    public EnDecryHelper checkUSBState(Activity activity,String USBPath){
         this.USBPath = USBPath;
         if(!new File(USBPath).exists()){//U盘不存在
-            TipsWidget tipsWidget = WidgetUtil.showTips(activity,CallBackState.USB_NOT_EXIST.toString());
+            TipsWidget tipsWidget = WidgetUtil.showTips(activity,CallBackState.USB_NOT_EXIST.toString()+":"+USBPath);
             tipsWidget.setSingleChoice();
             tipsWidget.getTvOk().setText("重试");
             tipsWidget.getTvOk().setOnClickListener(v -> {
                 tipsWidget.hide();
-                checkUSBState(activity,this.USBPath);
+                onCallbackStateNext(CallBackState.USB_RETRY);
             });
             onCallbackStateNext(CallBackState.USB_NOT_EXIST);
         }else{//U盘存在
@@ -410,6 +411,7 @@ public class EnDecryHelper {
                 checkMainBoard(activity);
             }
         }
+        return this;
     }
 
     /**

@@ -52,11 +52,11 @@ public class MainActivity extends RoActivity {
         //<item name="android:windowFullscreen">true</item>
         Rocket.clearWindowFullscreen(this);
         //代码注册U盘广播，在Android8.0以后对静态注册(AndroidManifest.xml)有限制，需要在代码中注册
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);//插
+        /*IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);//插
         //intentFilter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);//拔
         intentFilter.addAction(Intent.ACTION_MEDIA_REMOVED);  //完全拔出
         intentFilter.addDataScheme("file");//没有这行监听不起作用
-        registerReceiver(new USBReceiver(), intentFilter);
+        registerReceiver(new USBReceiver(), intentFilter);*/
         //读取U盘的路径
         USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"");
         //初始化路径结构
@@ -70,7 +70,12 @@ public class MainActivity extends RoActivity {
                 //Toast.makeText(this,"文件夹不存在,加载完成,耗时:"+msec+"毫秒",Toast.LENGTH_LONG).show();
             }
             //校验U盘
-            EnDecryHelper.get().checkUSBState(this,"/mnt/sdcard");
+            EnDecryHelper.get().checkUSBState(MainActivity.this,USBReceiver.USB_PATH).setOnCallbackStateListener(callbackState -> {
+                if(callbackState == EnDecryHelper.CallBackState.USB_RETRY){
+                    USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"");
+                    EnDecryHelper.get().checkUSBState(MainActivity.this,USBReceiver.USB_PATH);
+                }
+            });
         });
     }
 
