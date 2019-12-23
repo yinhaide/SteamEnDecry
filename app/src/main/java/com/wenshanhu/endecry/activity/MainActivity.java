@@ -58,7 +58,7 @@ public class MainActivity extends RoActivity {
         intentFilter.addDataScheme("file");//没有这行监听不起作用
         registerReceiver(new USBReceiver(), intentFilter);*/
         //读取U盘的路径
-        USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"");
+        USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"/mnt/sdcard");
         //初始化路径结构
         SteamHelper.get().init((msec) -> {
             //工程目录

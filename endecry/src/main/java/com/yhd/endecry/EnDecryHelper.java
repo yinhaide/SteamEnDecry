@@ -592,7 +592,7 @@ public class EnDecryHelper {
 
     // 主线程运行 -> playMainCallBack
     private void playMainCallBack(OnPlayCallBackListener playCallBackListener,PlayType playType, String url, byte[] buffer){
-        if(onPlayCallBackListener != null){
+        if(playCallBackListener != null){
             mainHandler.post(() -> playCallBackListener.onPlayCallBack(playType,url,buffer));
         }
     }
