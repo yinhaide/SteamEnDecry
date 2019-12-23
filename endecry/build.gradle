@@ -30,6 +30,12 @@ android {
 
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     /* ******* 统一基础包 ******** */
     api fileTree(dir: 'libs', include: ['*.jar'])
@@ -38,5 +44,6 @@ dependencies {
     api library.multidex
     api library.recyclerview
     // 架构包,单Activity多Fragment框架(https://github.com/yinhaide/HDRocket)
-    api 'com.github.yinhaide:HDRocket:0.0.4'
+    //api 'com.github.yinhaide:HDRocket:0.0.4'
+    api(name: library.rocket, ext: 'aar')
 }

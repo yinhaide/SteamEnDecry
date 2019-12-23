@@ -6,8 +6,8 @@ ext {
             compileSdkVersion: 28,
             minSdkVersion    : 19,
             targetSdkVersion : 22,//22 可以绕过6.0动态获取权限
-            versionCode      : 3,
-            versionName      : "0.0.3",
+            versionCode      : 4,
+            versionName      : "0.0.4",
             multiDexEnabled  : true
     ]
 
@@ -18,5 +18,6 @@ ext {
             desigin         : 'com.android.support:design:28.0.0',
             multidex        : 'com.android.support:multidex:1.0.1',
             recyclerview    : 'com.android.support:recyclerview-v7:28.0.0',
+            rocket          : 'rocket-v0.0.2'
     ]
 }

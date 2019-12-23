@@ -7,8 +7,6 @@ import com.de.rocket.ue.injector.BindView;
 import com.de.rocket.ue.injector.Event;
 import com.wenshanhu.endecry.R;
 import com.wenshanhu.endecry.helper.SteamHelper;
-import com.yhd.endecry.EnDecryHelper;
-
 /**
  * 类作用描述
  * Created by haide.yin(haide.yin@tcl.com) on 2019/10/30 15:42.
