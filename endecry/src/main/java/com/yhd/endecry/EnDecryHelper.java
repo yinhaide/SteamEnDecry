@@ -470,7 +470,7 @@ public class EnDecryHelper {
         EditWidget editWidget = WidgetUtil.showEdit(activity);
         editWidget.setSingleChoice();
         if(!TextUtils.isEmpty(oldPassword)){
-            editWidget.getEtContent().setHint("请输入您上次设置的八位密码");
+            editWidget.getEtContent().setHint("请输入八位登录密码");
         }else{//如果没有设置过密码则需要设置开机密码
             editWidget.getEtContent().setHint("请输入八位出厂密码");
         }
@@ -516,7 +516,7 @@ public class EnDecryHelper {
         EditWidget editWidget = WidgetUtil.showEdit(activity);
         editWidget.setSingleChoice();
         editWidget.getEtContent().setText("");
-        editWidget.getEtContent().setHint("请输入下次登录的的八位密码");
+        editWidget.getEtContent().setHint("请输设置新的八位登录密码");
         editWidget.getTvOk().setOnClickListener(v -> {
             String password = editWidget.getEtContent().getText().toString();
             if(TextUtils.isEmpty(password)){
