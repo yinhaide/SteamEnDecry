@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.yhd.utils.EnDecryUtil;
-import com.yhd.utils.FileUtil;
 import com.yhd.utils.WidgetUtil;
 import com.yhd.widget.EditWidget;
 import com.yhd.widget.TipsWidget;
@@ -413,7 +412,7 @@ public class EnDecryHelper {
         }else{//U盘存在
             if(new File(USBPath+File.separator+SUFFIX_UUID).exists()){//uuid文件存在
                 //保存在U盘文件的UUID信息
-                String saveUUID = FileUtil.readFromTxtFile(USBPath+File.separator+SUFFIX_UUID);
+                String saveUUID = EnDecryUtil.getUTF8String(EnDecryUtil.deEncrypt(USBPath+File.separator+SUFFIX_UUID));
                 //实时获取的U盘的UUID
                 String usbUUID = getUSBUUID(activity);
                 //usb的UUID与上次存储的UUID完全匹配
@@ -440,7 +439,7 @@ public class EnDecryHelper {
     private void checkMainBoard(Activity activity){
         if(new File(USBPath+File.separator+SUFFIX_MAINBOARD).exists()){//mainboard文件存在
             //保存在U盘文件的MainBoard信息
-            String saveMainBoard = FileUtil.readFromTxtFile(USBPath+File.separator+SUFFIX_MAINBOARD);
+            String saveMainBoard = EnDecryUtil.getUTF8String(EnDecryUtil.deEncrypt(USBPath+File.separator+SUFFIX_MAINBOARD));
             //实时获取的U盘的UUID
             String tvMainBoard = getDeviceMainBoard();
             //usb的mainBoard与上次存储的MainBoard完全匹配
@@ -466,14 +465,14 @@ public class EnDecryHelper {
         String oldPassword = "";
         if(new File(USBPath+File.separator+SUFFIX_PASSWORD).exists()){//password文件存在
             //保存在U盘文件的Password信息
-            oldPassword = FileUtil.readFromTxtFile(USBPath+File.separator+SUFFIX_PASSWORD);
+            oldPassword = EnDecryUtil.getUTF8String(EnDecryUtil.deEncrypt(USBPath+File.separator+SUFFIX_PASSWORD));
         }
         EditWidget editWidget = WidgetUtil.showEdit(activity);
         editWidget.setSingleChoice();
         if(!TextUtils.isEmpty(oldPassword)){
-            editWidget.getEtContent().setHint("请输入八位密码");
+            editWidget.getEtContent().setHint("请输入您上次设置的八位密码");
         }else{//如果没有设置过密码则需要设置开机密码
-            editWidget.getEtContent().setHint("请输入八位开机密码");
+            editWidget.getEtContent().setHint("请输入八位出厂密码");
         }
         final String finalOldPassword = oldPassword;
         editWidget.getTvOk().setOnClickListener(v -> {
@@ -485,7 +484,7 @@ public class EnDecryHelper {
             }else{
                 if(!TextUtils.isEmpty(finalOldPassword)){
                     //密码正确
-                    if(finalOldPassword.equals(password) || password.equals(DEFAULT_PASSWORD)){
+                    if(finalOldPassword.equals(password)){
                         //隐藏
                         editWidget.hide();
                         //U盘匹配
@@ -496,13 +495,41 @@ public class EnDecryHelper {
                         Toast.makeText(activity,"设备异常，请尽快与客服人员联系",Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    //隐藏
-                    editWidget.hide();
-                    //U盘匹配
-                    onCallbackStateNext(CallBackState.USB_FIX);
-                    //创建记录文件
-                    createSuffix(activity,password);
+                    if(password.equals(DEFAULT_PASSWORD)){
+                        //隐藏
+                        editWidget.hide();
+                        //设置新的密码
+                        createPassword(activity);
+                    }else{
+                        Toast.makeText(activity,"设备异常，请尽快与客服人员联系",Toast.LENGTH_SHORT).show();
+                    }
                 }
+            }
+        });
+
+    }
+
+    /**
+     * 校验密码信息
+     */
+    private void createPassword(Activity activity){
+        EditWidget editWidget = WidgetUtil.showEdit(activity);
+        editWidget.setSingleChoice();
+        editWidget.getEtContent().setText("");
+        editWidget.getEtContent().setHint("请输入下次登录的的八位密码");
+        editWidget.getTvOk().setOnClickListener(v -> {
+            String password = editWidget.getEtContent().getText().toString();
+            if(TextUtils.isEmpty(password)){
+                Toast.makeText(activity,"密码不能为空",Toast.LENGTH_SHORT).show();
+            }else if(password.length() != 8){
+                Toast.makeText(activity,"请输入八位密码",Toast.LENGTH_SHORT).show();
+            }else{
+                //隐藏
+                editWidget.hide();
+                //U盘匹配
+                onCallbackStateNext(CallBackState.USB_FIX);
+                //创建记录文件
+                createSuffix(activity,password);
             }
         });
 
@@ -514,15 +541,15 @@ public class EnDecryHelper {
     private void createSuffix(Activity activity,String password){
         //写入密码文件
         if(!TextUtils.isEmpty(password)){
-            FileUtil.writeTxtFile(USBPath+File.separator+SUFFIX_PASSWORD,password);
+            EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(password.getBytes()),USBPath+File.separator+SUFFIX_PASSWORD);
         }
         //写入UUID文件
         if(!TextUtils.isEmpty(getUSBUUID(activity))){
-            FileUtil.writeTxtFile(USBPath+File.separator+SUFFIX_UUID,getUSBUUID(activity));
+            EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(getUSBUUID(activity).getBytes()),USBPath+File.separator+SUFFIX_UUID);
         }
         //写入MainBoard文件
         if(!TextUtils.isEmpty(getDeviceMainBoard())){
-            FileUtil.writeTxtFile(USBPath+File.separator+SUFFIX_MAINBOARD,getDeviceMainBoard());
+            EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(getDeviceMainBoard().getBytes()),USBPath+File.separator+SUFFIX_MAINBOARD);
         }
     }
 

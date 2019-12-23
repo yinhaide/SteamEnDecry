@@ -72,8 +72,9 @@ public class EnDecryUtil {
      * @return 异或运算之后的字节流
      */
     public static byte[] deEncrypt(byte[] bufferData){
-        if(bufferData != null && bufferData.length > REVERSE_LENGTH){
-            for(int i = 0;i < REVERSE_LENGTH ; i++){
+        if(bufferData != null){
+            int maxLength = bufferData.length >= REVERSE_LENGTH ? REVERSE_LENGTH : bufferData.length;
+            for(int i = 0;i < maxLength ; i++){
                 bufferData[i] = (byte) (bufferData[i] ^ i);
             }
         }
