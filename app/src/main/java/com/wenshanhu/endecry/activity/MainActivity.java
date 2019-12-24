@@ -72,7 +72,7 @@ public class MainActivity extends RoActivity {
             //校验U盘
             EnDecryHelper.get().checkUSBState(MainActivity.this,USBReceiver.USB_PATH).setOnCallbackStateListener(callbackState -> {
                 if(callbackState == EnDecryHelper.CallBackState.USB_RETRY){
-                    USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"");
+                    USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"/mnt/sdcard");
                     EnDecryHelper.get().checkUSBState(MainActivity.this,USBReceiver.USB_PATH);
                 }
             });

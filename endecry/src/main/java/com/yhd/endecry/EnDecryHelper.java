@@ -28,17 +28,19 @@ public class EnDecryHelper {
     private static EnDecryHelper singleton;//单例
     private Handler mainHandler;//主线程
     private String USBPath;//U盘目录
-    private final static String DEFAULT_PASSWORD = "88888888";//默认密码
-    private final static String SUFFIX_UUID = ".uuid";//UUID临时文件
-    private final static String SUFFIX_MAINBOARD = ".mainboard";//主板信息临时文件
-    private final static String SUFFIX_PASSWORD = ".password";//密码临时文件
+    //private final static String DEFAULT_PASSWORD = "88888888";//默认密码
+    private final static String SUFFIX_UUID = ".uuid";//出厂UUID文件
+    private final static String SUFFIX_MAINBOARD = ".mainboard";//主板信息自动生成文件
+    private final static String SUFFIX_PASSWORD = ".password";//用户密码自动生成文件
+    private final static String SUFFIX_DEFAULT = ".default";//出厂密码文件
     private final static String TEMP_MP4 = ".mp4";//视频临时文件
     private final static String TEMP_MP3 = ".mp3";//音频临时文件
 
     /** 状态枚举 */
     public enum CallBackState{
+        USB_ERROR("设备异常，请尽快与客服人员联系"),
         USB_FIX("U盘符合"),
-        USB_RETRY("点了重试"),
+        USB_RETRY("重试"),
         USB_NOT_EXIST("U盘不存在");
 
         private final String state;
@@ -416,9 +418,7 @@ public class EnDecryHelper {
                 //实时获取的U盘的UUID
                 String usbUUID = getUSBUUID(activity);
                 //usb的UUID与上次存储的UUID完全匹配
-                if(!TextUtils.isEmpty(saveUUID)
-                        && !TextUtils.isEmpty(usbUUID)
-                        && usbUUID.equals(saveUUID)){
+                if(!TextUtils.isEmpty(saveUUID) && !TextUtils.isEmpty(usbUUID) && usbUUID.equals(saveUUID)){
                     //U盘匹配
                     onCallbackStateNext(CallBackState.USB_FIX);
                 }else{
@@ -443,9 +443,7 @@ public class EnDecryHelper {
             //实时获取的U盘的UUID
             String tvMainBoard = getDeviceMainBoard();
             //usb的mainBoard与上次存储的MainBoard完全匹配
-            if(!TextUtils.isEmpty(saveMainBoard)
-                    && !TextUtils.isEmpty(tvMainBoard)
-                    && tvMainBoard.equals(saveMainBoard)){
+            if(!TextUtils.isEmpty(saveMainBoard) && !TextUtils.isEmpty(tvMainBoard) && tvMainBoard.equals(saveMainBoard)){
                 //U盘匹配
                 onCallbackStateNext(CallBackState.USB_FIX);
             }else{
@@ -462,6 +460,19 @@ public class EnDecryHelper {
      * 校验密码信息
      */
     private void checkPassword(Activity activity){
+        if(!new File(USBPath+File.separator+SUFFIX_DEFAULT).exists()){//default文件存在
+            TipsWidget tipsWidget = WidgetUtil.showTips(activity,CallBackState.USB_ERROR.toString());
+            tipsWidget.setSingleChoice();
+            tipsWidget.getTvOk().setText("重试");
+            tipsWidget.getTvOk().setOnClickListener(v -> {
+                tipsWidget.hide();
+                onCallbackStateNext(CallBackState.USB_RETRY);
+            });
+            onCallbackStateNext(CallBackState.USB_ERROR);
+            return;
+        }
+        //拿到默认密码
+        String defaultPassword = EnDecryUtil.getUTF8String(EnDecryUtil.deEncrypt(USBPath+File.separator+SUFFIX_DEFAULT));
         String oldPassword = "";
         if(new File(USBPath+File.separator+SUFFIX_PASSWORD).exists()){//password文件存在
             //保存在U盘文件的Password信息
@@ -495,7 +506,7 @@ public class EnDecryHelper {
                         Toast.makeText(activity,"设备异常，请尽快与客服人员联系",Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    if(password.equals(DEFAULT_PASSWORD)){
+                    if(password.equals(defaultPassword)){
                         //隐藏
                         editWidget.hide();
                         //设置新的密码
@@ -544,9 +555,9 @@ public class EnDecryHelper {
             EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(password.getBytes()),USBPath+File.separator+SUFFIX_PASSWORD);
         }
         //写入UUID文件
-        if(!TextUtils.isEmpty(getUSBUUID(activity))){
+        /*if(!TextUtils.isEmpty(getUSBUUID(activity))){
             EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(getUSBUUID(activity).getBytes()),USBPath+File.separator+SUFFIX_UUID);
-        }
+        }*/
         //写入MainBoard文件
         if(!TextUtils.isEmpty(getDeviceMainBoard())){
             EnDecryUtil.writeToLocal(EnDecryUtil.deEncrypt(getDeviceMainBoard().getBytes()),USBPath+File.separator+SUFFIX_MAINBOARD);
