@@ -25,6 +25,9 @@ import java.util.List;
  */
 public class EnDecryHelper {
 
+    public final static String TEMP_MP4 = ".mp4";//视频临时文件
+    public final static String TEMP_MP3 = ".mp3";//音频临时文件
+
     private static EnDecryHelper singleton;//单例
     private Handler mainHandler;//主线程
     private String USBPath;//U盘目录
@@ -33,8 +36,6 @@ public class EnDecryHelper {
     private final static String SUFFIX_MAINBOARD = ".mainboard";//主板信息自动生成文件
     private final static String SUFFIX_PASSWORD = ".password";//用户密码自动生成文件
     private final static String SUFFIX_DEFAULT = ".default";//出厂密码文件
-    private final static String TEMP_MP4 = ".mp4";//视频临时文件
-    private final static String TEMP_MP3 = ".mp3";//音频临时文件
 
     /** 状态枚举 */
     public enum CallBackState{
@@ -129,7 +130,7 @@ public class EnDecryHelper {
                             }else{
                                 //如果是Android6.0以下，则先解密然后存到本地播放
                                 //为了不让用户看到，存缓存文件为.mp4，名字唯一
-                                String tempVideoPath = videoFile.getParent()+File.separator+TEMP_MP4;
+                                String tempVideoPath = USBPath+File.separator+TEMP_MP4;
                                 File tempVideoFile = new File(tempVideoPath);
                                 EnDecryUtil.writeToLocal(decryBuffer,tempVideoPath);
                                 if(tempVideoFile.exists()){
@@ -199,7 +200,7 @@ public class EnDecryHelper {
                             }else{
                                 //如果是Android6.0以下，则先解密然后存到本地播放
                                 //为了不让用户看到，存缓存文件为.mp3，名字唯一
-                                String tempMusicPath = musicFile.getParent()+File.separator+TEMP_MP3;
+                                String tempMusicPath = USBPath+File.separator+TEMP_MP3;
                                 EnDecryUtil.writeToLocal(decryBuffer,tempMusicPath);
                                 if(new File(tempMusicPath).exists()){
                                     playMainCallBack(onPlayCallBackListener,PlayType.URL_MUSIC,tempMusicPath,null);
@@ -401,6 +402,7 @@ public class EnDecryHelper {
      * 校验U盘
      */
     public EnDecryHelper checkUSBState(Activity activity,String USBPath){
+        deleteTemp(USBPath);
         this.USBPath = USBPath;
         if(!new File(USBPath).exists()){//U盘不存在
             TipsWidget tipsWidget = WidgetUtil.showTips(activity,CallBackState.USB_NOT_EXIST.toString()+":"+USBPath);
@@ -417,6 +419,7 @@ public class EnDecryHelper {
                 String saveUUID = EnDecryUtil.getUTF8String(EnDecryUtil.deEncrypt(USBPath+File.separator+SUFFIX_UUID));
                 //实时获取的U盘的UUID
                 String usbUUID = getUSBUUID(activity);
+                Toast.makeText(activity,"U盘的UUID信息:"+usbUUID+" 出厂的UUID信息:"+saveUUID,Toast.LENGTH_SHORT).show();
                 //usb的UUID与上次存储的UUID完全匹配
                 if(!TextUtils.isEmpty(saveUUID) && !TextUtils.isEmpty(usbUUID) && usbUUID.equals(saveUUID)){
                     //U盘匹配
@@ -442,6 +445,7 @@ public class EnDecryHelper {
             String saveMainBoard = EnDecryUtil.getUTF8String(EnDecryUtil.deEncrypt(USBPath+File.separator+SUFFIX_MAINBOARD));
             //实时获取的U盘的UUID
             String tvMainBoard = getDeviceMainBoard();
+            Toast.makeText(activity,"U盘的主板信息:"+tvMainBoard+" 保存的主板信息:"+saveMainBoard,Toast.LENGTH_SHORT).show();
             //usb的mainBoard与上次存储的MainBoard完全匹配
             if(!TextUtils.isEmpty(saveMainBoard) && !TextUtils.isEmpty(tvMainBoard) && tvMainBoard.equals(saveMainBoard)){
                 //U盘匹配
@@ -478,6 +482,7 @@ public class EnDecryHelper {
             //保存在U盘文件的Password信息
             oldPassword = EnDecryUtil.getUTF8String(EnDecryUtil.deEncrypt(USBPath+File.separator+SUFFIX_PASSWORD));
         }
+        Toast.makeText(activity,"用户的密码:"+oldPassword+" 出厂的密码:"+defaultPassword,Toast.LENGTH_SHORT).show();
         EditWidget editWidget = WidgetUtil.showEdit(activity);
         editWidget.setSingleChoice();
         if(!TextUtils.isEmpty(oldPassword)){
@@ -517,7 +522,6 @@ public class EnDecryHelper {
                 }
             }
         });
-
     }
 
     /**
@@ -568,7 +572,7 @@ public class EnDecryHelper {
      * 读取U盘的UUID，读取最后一个
      */
     private static String getUSBUUID(Context context){
-        String msg = "";
+        String msg = "unkow";
         StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
         try {
             Class storeManagerClazz = Class.forName("android.os.storage.StorageManager");
@@ -595,11 +599,26 @@ public class EnDecryHelper {
      * @return 主板信息信息
      */
     private static String getDeviceMainBoard() {
-        String mainBoard = "";
+        String mainBoard = "unkow";
         if(!TextUtils.isEmpty(Build.BOARD)){
             mainBoard = Build.BOARD;
         }
         return mainBoard;
+    }
+
+    /**
+     * 删除缓存文件
+     * @param usbPath U盘路径
+     */
+    public void deleteTemp(String usbPath){
+        String tempMusicPath = usbPath+File.separator+TEMP_MP3;
+        String tempVideoPath = usbPath+File.separator+TEMP_MP4;
+        if(new File(tempMusicPath).exists()){
+            new File(tempMusicPath).delete();
+        }
+        if(new File(tempVideoPath).exists()){
+            new File(tempVideoPath).delete();
+        }
     }
 
     /* ***************************** CallbackState ***************************** */

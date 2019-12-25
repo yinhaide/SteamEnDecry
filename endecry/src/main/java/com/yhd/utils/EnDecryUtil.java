@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -118,14 +117,21 @@ public class EnDecryUtil {
      * @param input 数据源输入流
      * @return 输出字节流
      */
-    public static byte[] toByteArray(InputStream input) throws IOException {
+    public static byte[] toByteArray(InputStream input){
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
         int n;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
+        try {
+            while (-1 != (n = input.read(buffer))) {
+                output.write(buffer, 0, n);
+            }
+            byte[] bufferArray = output.toByteArray();
+            output.close();
+            return bufferArray;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return output.toByteArray();
+        return new byte[0];
     }
 
     /**
@@ -146,5 +152,22 @@ public class EnDecryUtil {
      */
     public static Bitmap getBitmap(byte[] buffer){
         return BitmapFactory.decodeByteArray(buffer,0, buffer.length);
+    }
+
+    /**
+     * 从字节流中转为Bitmap
+     * @param buffer 字节流
+     * @param times 压缩倍数
+     * @return 转码的字符串
+     */
+    public static Bitmap getBitmap(byte[] buffer,int times,boolean isPng){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = times;
+        if(isPng){//这个值是设置色彩模式，默认值是ARGB_8888，在这个模式下，一个像素点占用4bytes空间
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        }else{//一般对透明度不做要求的话，一般采用RGB_565模式，这个模式下一个像素点占用2bytes
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+        }
+        return BitmapFactory.decodeByteArray(buffer,0, buffer.length,options);
     }
 }
