@@ -2,6 +2,9 @@ package com.yhd.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+
+import com.yhd.endecry.EnDecryHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -152,6 +155,25 @@ public class EnDecryUtil {
      */
     public static Bitmap getBitmap(byte[] buffer){
         return BitmapFactory.decodeByteArray(buffer,0, buffer.length);
+    }
+
+    /**
+     * 从字节流中转为Bitmap
+     * @param filepath 字节流
+     * @return 转码的字符串
+     */
+    public static Drawable getDrawable(String filepath){
+        Drawable drawable = null;
+        try {
+            // 拿到输入流
+            FileInputStream input = new FileInputStream(filepath);
+            drawable = Drawable.createFromStream(input, "drawable");
+            // 关闭输入流
+            input.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return drawable;
     }
 
     /**
