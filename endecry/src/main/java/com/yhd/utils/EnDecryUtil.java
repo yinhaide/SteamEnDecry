@@ -34,7 +34,7 @@ public class EnDecryUtil {
     //png
     public static final String PNG= "png";
     //png
-    public static final String TXT= "png";
+    public static final String TXT= "txt";
     //jpg
     public static final String JPG= "jpg";
     //jpg

@@ -374,7 +374,7 @@ public class EnDecryHelper {
                             playMainCallBack(onPlayCallBackListener,PlayType.NONE,jpgPath,null);
                         }
                     }).start();
-                }else if(jpgPath.endsWith(EnDecryUtil.PNG)){//没有加密的png格式
+                }else if(jpgPath.endsWith(EnDecryUtil.JPG)){//没有加密的JPG格式
                      playMainCallBack(onPlayCallBackListener,PlayType.URL_JPG,jpgPath,null);
                 }else{//其他格式不支持
                      playMainCallBack(onPlayCallBackListener,PlayType.NONE,jpgPath,null);
