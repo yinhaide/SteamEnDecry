@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.de.rocket.Rocket;

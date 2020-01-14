@@ -6,10 +6,12 @@ import android.graphics.drawable.Drawable;
 
 import com.yhd.endecry.EnDecryHelper;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -158,19 +160,34 @@ public class EnDecryUtil {
     }
 
     /**
-     * 从字节流中转为Bitmap
-     * @param filepath 字节流
-     * @return 转码的字符串
+     * 从文件路径转为Drawable
+     * @param fileurl 文件地址
+     * @return BitmapDrawable
      */
-    public static Drawable getDrawable(String filepath){
+    public static Drawable getDrawable(String fileurl){
         Drawable drawable = null;
         try {
-            // 拿到输入流
-            FileInputStream input = new FileInputStream(filepath);
-            drawable = Drawable.createFromStream(input, "drawable");
-            // 关闭输入流
-            input.close();
-        }catch(Exception e){
+            FileInputStream fileInputStream = new FileInputStream(fileurl);
+            drawable = Drawable.createFromStream(fileInputStream,"src");
+            fileInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return drawable;
+    }
+
+    /**
+     * 从字节流中转为Drawable
+     * @param buffer 流
+     * @return BitmapDrawable
+     */
+    public static Drawable getDrawable(byte[] buffer){
+        Drawable drawable = null;
+        try {
+            InputStream inputStream = new ByteArrayInputStream(buffer);
+            drawable = Drawable.createFromStream(inputStream,"src");
+            inputStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return drawable;
