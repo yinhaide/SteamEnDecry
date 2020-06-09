@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.de.rocket.utils.SharePreUtil;
 import com.yhd.utils.EnDecryUtil;
 import com.yhd.utils.MacUtil;
 import com.yhd.utils.WidgetUtil;
@@ -21,10 +22,12 @@ import java.io.File;
  */
 public class CheckHelper {
 
+    private static final String PASSWORD = "PASSWORD";
     private static CheckHelper singleton;//单例
     private Handler mainHandler;//主线程
     private String checkPath;//检测目录
     private final static String SUFFIX_MAC_PS = ".macps";//出厂mac地址和密码文件，mac和密码用&隔开
+    private boolean savePassword = true;//是否需要保存密码
 
     /** 状态枚举 */
     public enum CallBackState{
@@ -80,8 +83,19 @@ public class CheckHelper {
                     if(mac_ps.length == 2){
                         //mac地址一致
                         if(mac_ps[0].equals(MacUtil.getMacAddress(activity))){
-                            //开始校验密码
-                            checkPassword(activity,mac_ps[1]);
+                            if(savePassword){
+                                String oldPassword = SharePreUtil.getInstance().getString(activity,PASSWORD,"");
+                                if(!TextUtils.isEmpty(oldPassword)&&oldPassword.equals(mac_ps[1])){
+                                    //密码匹配
+                                    onCallbackStateNext(CallBackState.STATE_FIX);
+                                }else{
+                                    //开始校验密码
+                                    checkPassword(activity,mac_ps[1]);
+                                }
+                            }else{
+                                //开始校验密码
+                                checkPassword(activity,mac_ps[1]);
+                            }
                         }else{
                             showErrorDialog(activity,"mac地址不一致");
                         }
@@ -110,6 +124,7 @@ public class CheckHelper {
             }else{
                 //密码正确
                 if(finalOldPassword.equals(password)){
+                    SharePreUtil.getInstance().putString(activity,PASSWORD,password);
                     //隐藏
                     editWidget.hide();
                     //U盘匹配
