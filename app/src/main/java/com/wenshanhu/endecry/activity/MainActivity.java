@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.de.rocket.Rocket;
 import com.de.rocket.bean.ActivityParamBean;
@@ -20,7 +21,9 @@ import com.wenshanhu.endecry.frag.Frag_play;
 import com.wenshanhu.endecry.frag.Frag_endecry;
 import com.wenshanhu.endecry.helper.SteamHelper;
 import com.wenshanhu.endecry.receiver.USBReceiver;
+import com.yhd.endecry.CheckHelper;
 import com.yhd.endecry.EnDecryHelper;
+import com.yhd.utils.MacUtil;
 
 import java.io.File;
 
@@ -71,13 +74,14 @@ public class MainActivity extends RoActivity {
                 //Toast.makeText(this,"文件夹不存在,加载完成,耗时:"+msec+"毫秒",Toast.LENGTH_LONG).show();
             }
             //校验U盘
-            EnDecryHelper.get().checkUSBState(MainActivity.this,USBReceiver.USB_PATH).setOnCallbackStateListener(callbackState -> {
+            /*EnDecryHelper.get().checkUSBState(MainActivity.this,USBReceiver.USB_PATH).setOnCallbackStateListener(callbackState -> {
                 if(callbackState == EnDecryHelper.CallBackState.USB_RETRY){
                     USBReceiver.USB_PATH = SharePreUtil.getInstance().getString(this,USBReceiver.USB_PATH_KEY,"/mnt/sdcard");
                     EnDecryHelper.get().checkUSBState(MainActivity.this,USBReceiver.USB_PATH);
                 }
-            });
+            });*/
         });
+        CheckHelper.get().checkUSBState(this,CheckHelper.getSDPath());
     }
 
     @Override

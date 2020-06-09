@@ -3,6 +3,7 @@ package="com.yhd.endecry">
 
     <!--播放流网络媒体需要-->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:allowBackup="true"
