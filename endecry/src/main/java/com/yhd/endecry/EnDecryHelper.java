@@ -99,6 +99,13 @@ public class EnDecryHelper {
     }
 
     /**
+     * 设置路径
+     */
+    public void setUSBPath(String usbPath){
+        this.USBPath = USBPath;
+    }
+
+    /**
      * 处理加密视频的链接
      */
     public void getDeVideo(String originPath,OnPlayCallBackListener onPlayCallBackListener){
