@@ -3,6 +3,7 @@ package com.yhd.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 
 import com.yhd.endecry.EnDecryHelper;
 
@@ -67,6 +68,42 @@ public class EnDecryUtil {
             e.printStackTrace();
         }
         return bufferData;
+    }
+
+    /**
+     * 获取加密解密对应的path
+     *
+     * @param path 源path
+     * @return 加密对应的path
+     */
+    public static String getOppsitePath(String path){
+        // TODO: 2020/6/9 还未写完
+        if(!TextUtils.isEmpty(path)){
+            if(path.endsWith(SUFFIX_V)){
+
+            }else if(path.endsWith(SUFFIX_V)){
+
+            }else if(path.endsWith(SUFFIX_P)){
+
+            }else if(path.endsWith(SUFFIX_J)){
+
+            }else if(path.endsWith(SUFFIX_T)){
+
+            }else if(path.endsWith(SUFFIX_M)){
+
+            }else if(path.endsWith(MP4)){
+
+            }else if(path.endsWith(MP3)){
+
+            }else if(path.endsWith(TXT)){
+
+            }else if(path.endsWith(JPG)){
+
+            }else if(path.endsWith(PNG)){
+
+            }
+        }
+        return path;
     }
 
     /**

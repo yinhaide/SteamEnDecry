@@ -68,7 +68,6 @@ public class CheckHelper {
      * 校验U盘
      */
     public CheckHelper checkUSBState(Activity activity, String checkPath){
-        Toast.makeText(activity,"mac地址:"+MacUtil.getMacAddress(activity),Toast.LENGTH_LONG).show();
         this.checkPath = checkPath;
         //createSuffix("02:00:00:00:00:00&88888888");
         if(!new File(checkPath).exists()){//检测路径不存在
@@ -112,6 +111,7 @@ public class CheckHelper {
      * 校验密码信息
      */
     private void checkPassword(Activity activity, String finalOldPassword){
+        Toast.makeText(activity,"mac地址:"+MacUtil.getMacAddress(activity),Toast.LENGTH_LONG).show();
         EditWidget editWidget = WidgetUtil.showEdit(activity);
         editWidget.setSingleChoice();
         editWidget.getEtContent().setHint("请输入八位登录密码");
