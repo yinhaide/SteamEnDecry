@@ -111,7 +111,6 @@ public class CheckHelper {
      * 校验密码信息
      */
     private void checkPassword(Activity activity, String finalOldPassword){
-        Toast.makeText(activity,"mac地址:"+MacUtil.getMacAddress(activity),Toast.LENGTH_LONG).show();
         EditWidget editWidget = WidgetUtil.showEdit(activity);
         editWidget.setSingleChoice();
         editWidget.getEtContent().setHint("请输入八位登录密码");
@@ -137,6 +136,7 @@ public class CheckHelper {
     }
 
     private void showErrorDialog(Activity activity,String tips){
+        Toast.makeText(activity,tips+" mac地址:"+MacUtil.getMacAddress(activity),Toast.LENGTH_LONG).show();
         TipsWidget tipsWidget = WidgetUtil.showTips(activity, CallBackState.STATE_ERROR.toString());
         tipsWidget.setSingleChoice();
         tipsWidget.getTvOk().setText("重试");
